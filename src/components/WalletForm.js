@@ -7,7 +7,7 @@ class WalletForm extends Component {
   state = {
     expanse: '',
     description: '',
-    currency: '',
+    currency: 'USD',
     method: '',
     tag: '',
   };
