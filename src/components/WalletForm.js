@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies } from '../redux/actions';
+import fetchAPICurrencies from '../redux/utils/fetchAPICurrencies';
+import { fetchCurrencies, getWallet } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
-    expanse: '',
+    value: '',
     description: '',
     currency: 'USD',
-    method: '',
-    tag: '',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
+    id: 0,
   };
 
   async componentDidMount() {
@@ -23,18 +25,49 @@ class WalletForm extends Component {
     });
   };
 
+  handleCLick = async () => {
+    const { dispatch } = this.props;
+    this.setState((prev) => ({
+      id: prev.id + 1,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: '',
+      tag: '',
+    }));
+    const {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    } = this.state;
+    const exchangeRates = await fetchAPICurrencies();
+    const walletInfo = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates,
+    };
+    dispatch(getWallet(walletInfo));
+  };
+
   render() {
-    const { expanse, description, currency, method, tag } = this.state;
+    const { value, description, currency, method, tag } = this.state;
     const { currencies } = this.props;
     return (
       <form>
-        <label htmlFor="expanse">
+        <label htmlFor="value">
           Valor:
           <input
             type="number"
-            id="expanse"
-            name="expanse"
-            value={ expanse }
+            id="value"
+            name="value"
+            value={ value }
             data-testid="value-input"
             onChange={ this.handleChange }
           />
@@ -95,6 +128,12 @@ class WalletForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
+        <button
+          type="button"
+          onClick={ this.handleCLick }
+        >
+          Adicionar despesa
+        </button>
       </form>
     );
   }
