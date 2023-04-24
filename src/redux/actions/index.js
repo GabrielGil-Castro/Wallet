@@ -3,6 +3,8 @@ import fetchAPICurrencies from '../utils/fetchAPICurrencies';
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const CURRENCIE_CATEGORY = 'CURRENCIE_CATEGORY';
 export const SAVE_WALLET_INFO = 'SAVE_WALLET_INFO';
+export const DELETE_EXPENSES = 'DELETE_EXPENSES';
+export const DELETE_VALUE = 'DELETE_VALUE';
 
 export const emailSubmit = (email) => ({
   type: SAVE_EMAIL,
@@ -16,6 +18,11 @@ export const getCurrencie = (currencie) => ({
 
 export const getWallet = (payload) => ({
   type: SAVE_WALLET_INFO,
+  payload,
+});
+
+export const delteExpense = (payload) => ({
+  type: DELETE_EXPENSES,
   payload,
 });
 
